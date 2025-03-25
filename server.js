@@ -4,7 +4,14 @@ const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+// ✅ すべてのオリジンからのリクエストを許可
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
+
 app.use(express.json());
 
 const openai = new OpenAI({
@@ -16,7 +23,7 @@ app.post('/summarize', async (req, res) => {
     const userText = req.body.text;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4", // "gpt-3.5-turbo" でもOK
+      model: "gpt-3.5-turbo", // または gpt-4
       messages: [
         { role: "system", content: "以下の日本語の文章をわかりやすく要約してください。" },
         { role: "user", content: userText }
