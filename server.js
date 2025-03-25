@@ -25,7 +25,7 @@ app.post('/summarize', async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "以下の日本語の文章をわかりやすく要約してください。" },
+        { role: "system", content: "以下の文章を中学生でもわかるように要約してください。" },
         { role: "user", content: userText }
       ],
       temperature: 0.5
