@@ -5,10 +5,10 @@ require('dotenv').config();
 
 const app = express();
 
-// ✅ すべてのオリジンからのリクエストを許可
+// ✅ CORS設定（完全バージョン）
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
 
@@ -23,7 +23,7 @@ app.post('/summarize', async (req, res) => {
     const userText = req.body.text;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // または gpt-4
+      model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: "以下の日本語の文章をわかりやすく要約してください。" },
         { role: "user", content: userText }
@@ -38,6 +38,7 @@ app.post('/summarize', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('サーバーが http://localhost:3000 で起動しました');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`サーバーが http://localhost:${PORT} で起動しました`);
 });
