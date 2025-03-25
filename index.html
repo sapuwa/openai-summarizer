@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>要約アプリ</title>
+</head>
+<body>
+  <h2>文章要約フォーム</h2>
+  <textarea id="textInput" rows="10" cols="80" placeholder="ここに文章を入力してください..."></textarea><br>
+  <button onclick="summarize()">要約する</button>
+  <h3>要約結果：</h3>
+  <div id="result"></div>
+
+  <script>
+    async function summarize() {
+      const text = document.getElementById("textInput").value;
+
+      const res = await fetch("http://localhost:3000/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await res.json();
+      document.getElementById("result").innerText = data.summary || data.error;
+    }
+  </script>
+</body>
+</html>
